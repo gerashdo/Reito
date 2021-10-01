@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def nueva_reserva(request, user_pk, viaje_pk):
+    
     if(user_pk and viaje_pk):
         viaje = Viaje.objects.get(id=viaje_pk)
         usuario = Usuario.objects.get(id=user_pk)
@@ -17,10 +18,14 @@ def nueva_reserva(request, user_pk, viaje_pk):
             return redirect('viajes:index')
 
         if(viaje.asientos > 0):
-            reserva = Reserva.objects.create(viaje=viaje, usuario=usuario)
-            reserva.save()
-            messages.success(request, "Tu asiento ha sido reservado exitosamente")
-            return redirect('viajes:index')
+            try:
+                reserva = Reserva.objects.create(viaje=viaje, usuario=usuario)
+                reserva.save()
+                messages.success(request, "Tu asiento ha sido reservado exitosamente")
+                return redirect('viajes:index')
+            except:
+                messages.error(request, "No se pudo reservar tu asiento")
+                return redirect('viajes:index')
         else:
             messages.error(request, "Ya no hay asientos disponibles en este viaje")
             return redirect('viajes:index')

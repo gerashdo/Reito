@@ -1,10 +1,12 @@
 import os
 import django
 
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'reito.settings')
 django.setup()
 
-from viajes.models import Destino
+from viajes.models import Destino, Viaje
+from reservas.models import Reserva
 
 destinos_nuevos=[]
 with open('destinos.txt') as d:
@@ -19,3 +21,6 @@ for destino in destinos_registrados:
 for destino in destinos_nuevos:
     if destino not in destinos_registrados_plano:
         Destino.objects.create(nombre=destino)
+
+# Reserva.objects.all().delete()
+# Viaje.objects.all().delete()
