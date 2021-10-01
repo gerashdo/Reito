@@ -11,15 +11,39 @@ Editar cuenta
     <h1 class="text-center">Editar perfil</h1>
     <div class="row justify-content-center align-items-center">
     	<div class="col col-sm-8 col-md-6 col-lg-5">
-            <form method="post">
-                {% csrf_token %}
-                {% for field in form %}
-                    <label for="{{field.name}}" class="form-label">{{field.label}}</label>
-                    <input class="form-control" name="{{field.name}}" id="{{field.name}}" value="{{field.value}}">
-                {% endfor %}
-                <br>
-                <button type="submit" class="btn boton">Guardar cambios</button>
-            </form>
+            <div class="form-group">
+                <label for="username" class="form-label">Nombre de usuario</label>
+                <input type="text" class="form-control" name="username" id="username"value="{{user.username}}" disabled>
+
+                <label for="first_name" class="form-label">Nombre(s)</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" value="{{user.first_name}}" disabled>
+
+                <label for="last_name" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" value="{{user.last_name}}" disabled>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <label for="email" class="form-label">Correo</label>
+                    {{form.email}}
+                    
+                    <label for="telefono" class="form-label">Tel&eacute;fono</label>
+                    <input pattern="\d*" maxlength="10" minlength="10" class="form-control" name="{{form.telefono.name}}" id="{{form.telefono.name}}" value="{{form.telefono.value}}">
+                    
+                    <br>
+
+                    <div class="container">
+                        <div class="row justify-content-evenly">
+                            <div class="col-4">
+                                <a href="javascript:history.back()" class="btn boton"> Volver Atrás</a>
+                                
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn boton">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div><!--/col-9-->
     </div><!--/row-->
 </div>

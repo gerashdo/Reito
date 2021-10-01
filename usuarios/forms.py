@@ -36,7 +36,12 @@ class UsuarioForm(forms.ModelForm):
 class EditarUsuarioForm(forms.ModelForm):
     class Meta:
         model=Usuario
-        fields=('username','first_name','last_name','email','telefono')
+        fields=('email','telefono')
+
+        widgets={
+            'email':forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Correo'}),
+            'telefono':forms.NumberInput(attrs={'class':'form-control','placeholder':'Teléfono'})
+        }
 
         labels = {
             'username': 'Nombre de usuario',

@@ -11,6 +11,9 @@
 <br><br>
 <div class="container col-sm-10 col-md-6 col-lg-4 justify-content-center align-items-center">
     {% if viajes %}
+    <div class="text-center" style="margin-bottom: 20px;">
+      <h1>Selecciona tu Reito</h1>
+    </div>
     <ul class="list-group list-group-flush">
         {% for viaje in viajes %}
             <a href="{% url 'viajes:detalle' viaje.id %}" class="border rounded-3 list-group-item list-group-item-action flex-column align-items-start destino-item">

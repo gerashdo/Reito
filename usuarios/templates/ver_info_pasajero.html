@@ -19,11 +19,19 @@
                 <input type="email" class="form-control" name="email" id="email"value="{{usuario.telefono}}" disabled>
             </div>
              <br>
-            {% if not reserva.estado %}
-                <div class="row col-sm-10 col-md-6 col-lg-4 mx-auto">
-                    <a class ="btn boton" href="{%url 'reservas:aceptar' usuario.id viaje.id %}">Aceptar</a>
+                <div class="container">
+                    <div class="row justify-content-evenly">
+                        <div class="col-4">
+                            <a href="javascript:history.back()" class="btn boton-negativo"> Volver Atrás</a>
+                        </div>
+                        {% if not reserva.estado %}
+                            <div class="col-4">
+                                <a class ="btn boton" href="{%url 'reservas:aceptar' usuario.id viaje.id %}">Aceptar</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            {% endif %}
+            
         </div><!--/col-9-->
     </div><!--/row-->
 </div>

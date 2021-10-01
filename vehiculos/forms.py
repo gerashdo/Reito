@@ -22,3 +22,17 @@ class VehiculosForm(forms.ModelForm):
             'asientos':'Asientos',
             'descripcion':'Descripción'
         }
+
+    def clean(self):
+            super(VehiculosForm, self).clean()
+            matricula =  self.cleaned_data.get('matricula')
+            asientos = self.cleaned_data.get('asientos')
+
+            if len(matricula) != 7:
+                self._errors['matricula'] = self.error_class(['Minimo de 7 caracteres requeridos'])
+
+            if asientos < 1:
+                self._errors['asientos'] = self.error_class(['Los asientos deben ser un numero entero positivo'])    
+
+            
+

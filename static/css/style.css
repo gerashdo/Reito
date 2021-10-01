@@ -1,7 +1,11 @@
+body {
+    background-color: rgb(245, 245, 245);
+}
+
 .separador
 {
     padding: 5px;
-    background-color: rgb(231, 239, 250);
+    background-color: rgb(245, 245, 245);
 }
 
 .propio-nav
@@ -41,6 +45,14 @@
     align-items: flex-end;
 } */
 
+.nav-it-der {
+    margin-right: 7%;
+}
+
+.nav-it-izq {
+    margin-left: 7%;
+}
+
 .nav-personalized {
     background-color: #0D0221;
 }
@@ -55,12 +67,15 @@
     color: #3A606E;
 }
 
+.nav-personalized ul a{
+    color: #3A606E;
+}
+
 .separator {
     padding: 5px;
 }
 
 .container-image-index {
-    position: relative;
     text-align: center;
     background-color: #3A606E;
 }
@@ -94,7 +109,7 @@
     color:white;
 }
 
-.card h1 {
+/* .card h1 {
     font-weight: bolder;
 }
 
@@ -104,7 +119,7 @@
 
 .card p {
     font-size: 1.5rem;
-}
+} */
 
 .boton-negativo {
     background:#3A606E; 
@@ -113,28 +128,24 @@
 
 @media (min-width: 990px) {
     .busqueda {
-        position:absolute; 
-        left:30%
+        left:35%
     }
 }
 
 @media (max-width: 989px) {
     .busqueda {
-        position:absolute; 
         left:25%
     }
 }
 
 @media (max-width: 767px) {
     .busqueda {
-        position:absolute; 
         left:15%
     }
 }
 
 @media (max-width: 340px) {
     .busqueda {
-        position:absolute; 
         left:5%
     }
 }
@@ -142,5 +153,9 @@
 .destino-item:hover {
     background:#3A606E; 
     color:white;
+    margin: 10px;
+}
+.destino-item {
+    margin: 10px;
 }
 

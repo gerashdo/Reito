@@ -41,13 +41,13 @@ def nuevo_viaje(request):
 
             if form.is_valid() and asientos_publicados >= capacidad:
                 form.save()
-                messages.success(request, "Se ha creado con exito tu viaje.")
+                messages.success(request, "Se ha creado con éxito tu viaje.")
                 return redirect('viajes:index')
             else:
-                messages.error(request, "Los datos ingresados no son validos")
+                messages.error(request, "Los datos ingresados no son válidos.")
                 return redirect('viajes:nuevo')
         else:
-            messages.error(request, "Aun no tienes un vehiculo para realizar el viaje")
+            messages.error(request, "Aun no tienes un vehículo para realizar el viaje.")
             return redirect('viajes:nuevo')
 
     form = ViajeForm()
