@@ -7,6 +7,8 @@ django.setup()
 
 from viajes.models import Destino, Viaje
 from reservas.models import Reserva
+from usuarios.models import Usuario
+from vehiculos.models import Vehiculo
 
 destinos_nuevos=[]
 with open('destinos.txt') as d:
@@ -22,5 +24,7 @@ for destino in destinos_nuevos:
     if destino not in destinos_registrados_plano:
         Destino.objects.create(nombre=destino)
 
-# Reserva.objects.all().delete()
-# Viaje.objects.all().delete()
+Reserva.objects.all().delete()
+Viaje.objects.all().delete()
+Usuario.objects.all().delete()
+Vehiculo.objects.all().delete()
