@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 from django.urls.base import reverse_lazy
 import django_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'vehiculos',
     'viajes',
     'reservas',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +99,13 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
 }
+
+# adding config
+cloudinary.config( 
+  cloud_name = 'teamasd', 
+  api_key = '424426711443113', 
+  api_secret = 'FPDOLpW4P1kP8ENxMW9lN6BjD68' 
+)
 
 
 # Password validation

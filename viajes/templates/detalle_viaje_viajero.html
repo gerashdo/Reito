@@ -43,7 +43,7 @@
     <div class="card">
         <div class="text-center card-header">
             {% if foto %}
-                <img src="{% get_media_prefix %}{{foto}}" alt="" style="width: 200px" class="">
+                <img src="{{foto.url}}" alt="" style="width: 200px" class="">
             {% else %}
                 <img src="{% get_media_prefix %}img/usuario.png" style="width: 200px" class="">
             {% endif %}

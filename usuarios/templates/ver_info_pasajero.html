@@ -13,7 +13,7 @@
     	<div class="col col-sm-8 col-md-6 col-lg-5">
             <div class="d-flex justify-content-around">
                 {% if usuario.foto %}
-                    <img src="{% get_media_prefix %}{{usuario.foto}}" alt="" style="height: 200px; width: 200px" class="rounded-circle">
+                    <img src="{{usuario.foto.url}}" alt="" style="height: 200px; width: 200px" class="rounded-circle">
                 {% else %}
                     <img src="{% get_media_prefix %}img/usuario.png" alt="" style="height: 200px; width: 200px">
                 {% endif %}

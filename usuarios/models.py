@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from reito import settings
+from cloudinary.models import CloudinaryField
 
 
 
 # Modelo que representa a un usuario del sistema.
 class Usuario(User):
     telefono= models.BigIntegerField()
-    foto=models.ImageField(default=None,upload_to="img/",blank=True,null=True)
+    foto=CloudinaryField('image',default=None,blank=True,null=True)
     descripcion = models.CharField(max_length=300, blank=True, null=True)
 
 
