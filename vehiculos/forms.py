@@ -11,7 +11,7 @@ class VehiculosForm(forms.ModelForm):
         widgets = {
             'modelo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Aveo'}),
             'marca': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Chevrolet'}),
-            'matricula': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AAA-AAA'}),
+            'matricula': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AHF356B'}),
             'asientos': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '2'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Describa su auto'}),
         }
@@ -30,14 +30,22 @@ class VehiculosForm(forms.ModelForm):
         matricula = self.cleaned_data.get('matricula')
         asientos = self.cleaned_data.get('asientos')
 
-        if len(matricula) != 7:
+        if len(matricula) < 6 or len(matricula) > 7:
             self._errors['matricula'] = self.error_class(
-                ['Minimo de 7 caracteres requeridos'])
+                ['Sólo 6 o 7 caracteres permitidos'])
+        
+        # Verify if the matricula is alphanumeric
+        if not matricula.isalnum():
+            self._errors['matricula'] = self.error_class(
+                ['Solo caracteres alfanuméricos'])
+        
+        if not matricula.isupper():
+            self._errors['matricula'] = self.error_class(
+                ['Solo caracteres en mayúsculas'])
 
         if asientos < 1:
             self._errors['asientos'] = self.error_class(
                 ['Los asientos deben ser un numero entero positivo'])
-#
 
 
 class Vehiculos_editar(forms.ModelForm):
