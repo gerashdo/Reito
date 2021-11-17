@@ -32,16 +32,16 @@ class VehiculosForm(forms.ModelForm):
 
         if len(matricula) < 6 or len(matricula) > 7:
             self._errors['matricula'] = self.error_class(
-                ['Minimo de 7 caracteres requeridos'])
+                ['Sólo 6 o 7 caracteres permitidos'])
         
         # Verify if the matricula is alphanumeric
         if not matricula.isalnum():
             self._errors['matricula'] = self.error_class(
-                ['Solo caractéres alfanuméricos'])
+                ['Solo caracteres alfanuméricos'])
         
         if not matricula.isupper():
             self._errors['matricula'] = self.error_class(
-                ['Solo caractéres en mayúsculas'])
+                ['Solo caracteres en mayúsculas'])
 
         if asientos < 1:
             self._errors['asientos'] = self.error_class(
