@@ -17,8 +17,7 @@ class Viaje(models.Model):
     destino = models.ForeignKey(
         "viajes.Destino", verbose_name='Destino', on_delete=models.CASCADE)
     fecha = models.DateField(verbose_name="Fecha", default=date.today)
-    hora = models.TimeField(verbose_name="Hora",
-                            auto_now=False, auto_now_add=False)
+    hora = models.TimeField(verbose_name="Hora", auto_now=False, auto_now_add=False)
     asientos = IntegerField('Asientos')
     precio = DecimalField('Precio', max_digits=5, decimal_places=2)
     descripcion = CharField('Descripción', max_length=500)
