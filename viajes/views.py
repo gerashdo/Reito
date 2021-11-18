@@ -258,33 +258,47 @@ def buscar_viajes(request, pk):
 def ver_viajes(request):
     usuario = get_object_or_404(Usuario, id=request.user.id)
     viajes = Viaje.objects.filter(conductor=usuario)
+    # Here unfinished trips are filtered
+    viajes_recientes = []
+    for viaje in viajes:
+        # First check that if there is a trip on the current day
+        # yes, if there is after, it validates that the time is greater than the current one
+        # and if these two conditions are correct it is added to the list of recent trips.
+        if viaje.fecha == datetime.now().date():
+            if viaje.hora > datetime.now().time():
+                viajes_recientes.append(viaje)
+        # Then we only verify the days older than the current one to add them to the
+        # list of recent trips.
+        if viaje.fecha > datetime.now().date():
+            viajes_recientes.append(viaje)
+            
     context = {
-        'viajes': viajes
+        'viajes': viajes_recientes
     }
     return render(request, 'ver_viajes.html', context)
 
 
 @login_required
 def mis_reservas(request):
+    # Obtener usuario y datos de fecha actuales.
     usuario = get_object_or_404(Usuario, id=request.user.id)
-    reservas = Reserva.objects.filter(usuario=usuario)
+    fecha_actual = datetime.now().date()
+    hora_actual = datetime.now().time()
+    # Obtener todas las reservas, pasadas y actuales.
+    reservas_general = Reserva.objects.filter(usuario=usuario)
+    reservas = []
+    # For para filtrar las reservas pasadas de entre las generales.
+    for reserva in reservas_general:
+        viaje = reserva.viaje
+        if viaje.fecha > fecha_actual:
+            reservas.append(reserva)
+        elif viaje.fecha == fecha_actual and viaje.hora > hora_actual:
+            reservas.append(reserva)
+
     context = {
         'reservas': reservas
     }
     return render(request, 'mis_reservas.html', context)
-
-
-
-
-# @login_required
-# def ver_viajes(request):
-#     usuario = get_object_or_404(Usuario, id=request.user.id)
-#     viajes = Viaje.objects.filter(conductor=usuario)
-#     context = {
-#         'viajes': viajes
-#     }
-#     return render(request, 'ver_viajes.html', context)
-
 
 '''
 Función que obtiene los destinos mas frecuentes o populares.
@@ -392,7 +406,7 @@ def ver_historial_conductor(request):
     fecha_actual = datetime.now().date()
     hora_actual = datetime.now().time()
     # Obtener viajes en general, pasados y actuales.
-    viajes_general = Viaje.objects.filter(conductor=usuario)
+    viajes_general = Viaje.objects.filter(conductor=usuario).order_by('-fecha')
     viajes = []
     # For para filtrar los viajes pasados de los generales.
     for viaje in viajes_general:
