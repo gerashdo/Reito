@@ -197,6 +197,9 @@ div.estado_negativo {
 
 .viajes-recientes {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
 }
 
 @media (min-width: 990px) {
@@ -212,6 +215,7 @@ div.estado_negativo {
 
     .viajes-recientes {
         flex-direction: column;
+
     }
 }
 
@@ -242,7 +246,17 @@ div.estado_negativo {
     margin-bottom: 17.5px;
     margin-left: 17.5px;
     margin-right:17.5px;
-    width: 90%;
+    width: 100%;
+}
+
+.viajes-recientes .destino-item {
+    width: 30%;
+}
+
+@media (max-width: 989px) {
+    .viajes-recientes .destino-item {
+        width: 90%;
+    }
 }
 
 
