@@ -28,7 +28,7 @@
                 
                 {% if usuario.descripcion %}
                     <label for="descripcion" class="form-label">Descripci&oacute;n</label>
-                    <input type="text" class="form-control" name="descripcion" id="id_descripcion"value="{{ usuario.descripcion }}" disabled>
+                    <textarea type="text" class="form-control" name="descripcion" id="id_descripcion" rows="10" cols="20" disabled>{{ usuario.descripcion }}</textarea>
                 {% endif %}  
             </div>
              <br>
