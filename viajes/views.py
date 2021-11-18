@@ -43,31 +43,51 @@ class NuevoViaje(LoginRequiredMixin, CreateView):
 def nuevo_viaje(request):
     usuario = get_object_or_404(Usuario, id=request.user.id)
     vehiculos = Vehiculo.objects.filter(id_usuario=request.user.id)
-    asientos_publicados = vehiculos[0].asientos
-    if request.method == "POST":
-        if (vehiculos.count() > 0):
-            form = ViajeForm(request.POST)
-            form.instance.conductor = usuario
-            capacidad = int(form.data['asientos'])
-            
-            # Here it is validated that the number of seats registered in the vehicle is not greater than the one entered in the form
-            if capacidad > asientos_publicados:
-                #The error is added to the form to the 'asientos' field
-                form.add_error('asientos',[f'El número de asientos es mayor a la capacidad de tu vehiculo.\nTu capacidad es de {asientos_publicados} asientos. '])
-                messages.error(request, "Los datos ingresados no son válidos.")
-                return render(request,'nuevo.html',context={'form':form})
-            
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Se ha creado con éxito tu viaje.")
-                return redirect('viajes:ver_viajes')
+    asientos_publicados = 0
+    
+    # Validation to verify if the user has a vehicle registered
+    if vehiculos:
+    
+        asientos_publicados = vehiculos[0].asientos
+        if request.method == "POST":
+            if (vehiculos.count() > 0):
+                form = ViajeForm(request.POST)
+                form.instance.conductor = usuario
+                capacidad = int(form.data['asientos'])
+                
+                # Here it is validated that the number of seats registered in the vehicle is not greater than the one entered in the form
+                if capacidad > asientos_publicados:
+                    #The error is added to the form to the 'asientos' field
+                    form.add_error('asientos',[f'El número de asientos es mayor a la capacidad de tu vehiculo.\nTu capacidad es de {asientos_publicados} asientos. '])
+                    messages.error(request, "Los datos ingresados no son válidos.")
+                    return render(request,'nuevo.html',context={'form':form})
+                
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Se ha creado con éxito tu viaje.")
+                    return redirect('viajes:ver_viajes')
+                else:
+                    messages.error(request, "Los datos ingresados no son válidos.")
+                    return render(request,'nuevo.html',context={'form':form})
             else:
-                messages.error(request, "Los datos ingresados no son válidos.")
-                return render(request,'nuevo.html',context={'form':form})
-        else:
-            messages.error(
-                request, "Aun no tienes un vehículo para realizar el viaje.")
-            return redirect('viajes:nuevo')
+                messages.error(
+                    request, "Aun no tienes un vehículo para realizar el viaje.")
+                return redirect('viajes:nuevo')
+            
+        form = ViajeForm()
+        context = {
+            "form": form,
+            "asientos_v":asientos_publicados,
+            "tiene_vehiculo" : True
+        }
+        return render(request, "nuevo.html", context)
+    else:
+        form = ViajeForm()
+        context = {
+            "tiene_vehiculo" : False
+        }
+        return render(request, "nuevo.html", context)
+        
 
     form = ViajeForm()
     context = {

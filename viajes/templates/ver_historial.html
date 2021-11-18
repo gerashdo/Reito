@@ -35,7 +35,8 @@
         {% endfor %}
     </ul>
     {% elif viajero %}
-        <h4>Comienza a reservar <a href="{% url 'viajes:index' %}">aqu&iacute;</a> </h4>
+    <br>
+        <h4 class="text-center">Comienza a reservar <a href="{% url 'viajes:index' %}">aqu&iacute;.</a> </h4>
     {% endif %}
 </div>
 <br><br>
@@ -58,7 +59,7 @@
         {% endfor %}
     </ul>
     {% elif conductor %}
-    <h4>Crea tu primer Reito <a href="{% url 'viajes:nuevo' %}">aqu&iacute;</a> </h4>
+    <h4 class="text-center">Crea tu primer Reito <a href="{% url 'viajes:nuevo' %}">aqu&iacute;.</a> </h4>
     {% endif %}
 </div>
 <br><br>
