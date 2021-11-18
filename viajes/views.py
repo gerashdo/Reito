@@ -290,12 +290,21 @@ def obtener_destinos_frecuentes():
 
 # Method utilized to get the 3 most recent Reitos.
 def obtener_ultimos_reitos():
-    res=Viaje.objects.values('id').order_by('-id')[:3] # We get the latest 3 Reitos from our DB.
-    viajes=[]
-    for item in res:
-        viaje=get_object_or_404(Viaje,id=item['id']) # We obtain every Viaje that is used in our latest Reitos.
-        viajes.append(viaje) # We add our Viaje to a list that we are returning after collecting all of them.
-    return viajes
+    lista_viajes=Viaje.objects.values('id').order_by('-id')[:3] # We get the latest 3 Reitos from our DB.
+    viajes_recientes=[]
+    for viaje in lista_viajes:
+        viaje=get_object_or_404(Viaje, id=viaje['id'])
+        # Primero verifica que si hay un viaje en el dia actual
+        # si, si hay despues valida que la hora sea mayor a la actual
+        # y si estas dos condiciones son correctas se agrega a la lista de viajes recientes.
+        if viaje.fecha == datetime.now().date():
+            if viaje.hora > datetime.now().time():
+                viajes_recientes.append(viaje)
+        # Despues ya solo verificamos los dias mayores al actual para agregarlos a la
+        # lista de viajes_recientes.
+        if viaje.fecha > datetime.now().date():
+            viajes_recientes.append(viaje)
+    return viajes_recientes
 
 # Funcion para obtener los viajes y reservcas pasados de el usuario logeado.
 @login_required
