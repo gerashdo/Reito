@@ -7,6 +7,7 @@ class Vehiculo(models.Model):
     matricula = models.CharField("Matricula", max_length=7)
     asientos = models.IntegerField("Asientos")
     descripcion = models.CharField("Descripcion", max_length=500)
+    estado = models.BooleanField("Estado", default=True, null=False, blank=False)
     id_usuario = models.OneToOneField(
         "usuarios.Usuario", verbose_name="Usuario", on_delete=models.CASCADE, null=True, blank=True)
 
