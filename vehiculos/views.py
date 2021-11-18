@@ -53,7 +53,8 @@ def editar_vehiculo(request):
 # This method has the function to delete a car
 
 def eliminar_vehiculo(request, pk):
-    vehiculo = get_object_or_404(Vehiculo, id=pk)
+    usuario = get_object_or_404(Usuario, id=request.user.id)
+    vehiculo = get_object_or_404(Vehiculo, id=pk, id_usuario=usuario).first()
     
     if request.method == "POST":
         vehiculo.delete()

@@ -42,22 +42,28 @@ class NuevoViaje(LoginRequiredMixin, CreateView):
 @login_required
 def nuevo_viaje(request):
     usuario = get_object_or_404(Usuario, id=request.user.id)
+    vehiculos = Vehiculo.objects.filter(id_usuario=request.user.id)
+    asientos_publicados = vehiculos[0].asientos
     if request.method == "POST":
-        vehiculos = Vehiculo.objects.filter(id_usuario=request.user.id)
         if (vehiculos.count() > 0):
             form = ViajeForm(request.POST)
             form.instance.conductor = usuario
-
             capacidad = int(form.data['asientos'])
-            asientos_publicados = vehiculos[0].asientos
-
-            if form.is_valid() and asientos_publicados >= capacidad:
+            
+            # Here it is validated that the number of seats registered in the vehicle is not greater than the one entered in the form
+            if capacidad > asientos_publicados:
+                #The error is added to the form to the 'asientos' field
+                form.add_error('asientos',[f'El número de asientos es mayor a la capacidad de tu vehiculo.\nTu capacidad es de {asientos_publicados} asientos. '])
+                messages.error(request, "Los datos ingresados no son válidos.")
+                return render(request,'nuevo.html',context={'form':form})
+            
+            if form.is_valid():
                 form.save()
                 messages.success(request, "Se ha creado con éxito tu viaje.")
                 return redirect('viajes:ver_viajes')
             else:
                 messages.error(request, "Los datos ingresados no son válidos.")
-                return redirect('viajes:nuevo')
+                return render(request,'nuevo.html',context={'form':form})
         else:
             messages.error(
                 request, "Aun no tienes un vehículo para realizar el viaje.")
@@ -65,7 +71,8 @@ def nuevo_viaje(request):
 
     form = ViajeForm()
     context = {
-        "form": form
+        "form": form,
+        "asientos_v":asientos_publicados
     }
     return render(request, "nuevo.html", context)
 
