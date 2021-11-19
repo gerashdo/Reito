@@ -2,6 +2,8 @@ from django import forms
 from .models import Viaje, Destino
 from datetime import datetime
 
+# Personalized field for DateInput field.
+
 class DateInput(forms.DateInput):
     input_type = "date"
     def __init__(self, **kwargs):

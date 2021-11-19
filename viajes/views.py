@@ -88,15 +88,6 @@ def nuevo_viaje(request):
         }
         return render(request, "nuevo.html", context)
         
-
-    form = ViajeForm()
-    context = {
-        "form": form,
-        "asientos_v":asientos_publicados
-    }
-    return render(request, "nuevo.html", context)
-
-
 class NuevoDestino(LoginRequiredMixin, CreateView):
     model = Destino
     # extra_context = {'':''}
@@ -160,14 +151,6 @@ def detalle_viaje(request, pk):
 
         return render(request, "detalle_viaje_viajero.html", context)
 
-
-class EditarViaje(LoginRequiredMixin, UpdateView):
-    model = Viaje
-    form_class = ViajeForm
-    # extra_context = {'':''}
-    success_url = reverse_lazy('viajes:detalle')
-
-
 @login_required
 def cancelar_viaje(request, pk):
     # Get an instance of the trip you want to cancel.
@@ -223,17 +206,17 @@ def buscar_viajes(request, pk):
     else:
         lista_viajes = Viaje.objects.filter(destino=destino_encontrado)
    
-    # Aqui se filtran los viajes que no han finalizado
+    # Unfinished trips are filtered here
     viajes_recientes = []
     for viaje in lista_viajes:
-        # Primero verifica que si hay un viaje en el dia actual
-        # si, si hay despues valida que la hora sea mayor a la actual
-        # y si estas dos condiciones son correctas se agrega a la lista de viajes recientes.
+        # First check that if there is a trip on the current day
+        # if there is, then validate that the time is greater than the current one
+        # and if these two conditions are correct it is added to the list of recent trips.
         if viaje.fecha == datetime.now().date():
             if viaje.hora > datetime.now().time():
                 viajes_recientes.append(viaje)
-        # Despues ya solo verificamos los dias mayores al actual para agregarlos a la
-        # lista de viajes_recientes.
+        # Then we only verify the days older than the current one to add them to the
+        # viajes_recientes list.
         if viaje.fecha > datetime.now().date():
             viajes_recientes.append(viaje)
            
@@ -280,14 +263,14 @@ def ver_viajes(request):
 
 @login_required
 def mis_reservas(request):
-    # Obtener usuario y datos de fecha actuales.
+    # Get current user and date data.
     usuario = get_object_or_404(Usuario, id=request.user.id)
     fecha_actual = datetime.now().date()
     hora_actual = datetime.now().time()
-    # Obtener todas las reservas, pasadas y actuales.
+    # Get all reservations, past and current.
     reservas_general = Reserva.objects.filter(usuario=usuario)
     reservas = []
-    # For para filtrar las reservas pasadas de entre las generales.
+    # For to filter past reservations from general ones.
     for reserva in reservas_general:
         viaje = reserva.viaje
         if viaje.fecha > fecha_actual:
@@ -328,29 +311,29 @@ def obtener_ultimos_reitos():
     viajes_recientes=[]
     for viaje in lista_viajes:
         viaje=get_object_or_404(Viaje, id=viaje['id'])
-        # Primero verifica que si hay un viaje en el dia actual
-        # si, si hay despues valida que la hora sea mayor a la actual
-        # y si estas dos condiciones son correctas se agrega a la lista de viajes recientes.
+        # First check that if there is a trip on the current day
+        # if there is, then validate that the time is greater than the current one
+        # and if these two conditions are correct it is added to the list of recent trips.
         if viaje.fecha == datetime.now().date():
             if viaje.hora > datetime.now().time():
                 viajes_recientes.append(viaje)
-        # Despues ya solo verificamos los dias mayores al actual para agregarlos a la
-        # lista de viajes_recientes.
+        # Then we only verify the days older than the current one to add them to the
+        # viajes_recientes list.
         if viaje.fecha > datetime.now().date():
             viajes_recientes.append(viaje)
     return viajes_recientes
 
-# Funcion para obtener los viajes y reservcas pasados de el usuario logeado.
+# Function to get the past trips and reservations of the logged in user.
 @login_required
 def ver_historial(request):
-    # Obtener usuario y datos de fecha actuales.
+    # Get current user and date data.
     usuario = get_object_or_404(Usuario, id=request.user.id)
     fecha_actual = datetime.now().date()
     hora_actual = datetime.now().time()
-    # Obtener todas las reservas, pasadas y actuales.
+    # Get all reservations, past and current.
     reservas_general = Reserva.objects.filter(usuario=usuario)
     reservas = []
-    # For para filtrar las reservas pasadas de entre las generales.
+    # For to filter past reservations from general ones.
     for reserva in reservas_general:
         viaje = reserva.viaje
         if viaje.fecha < fecha_actual:
@@ -358,17 +341,17 @@ def ver_historial(request):
         elif viaje.fecha == fecha_actual and viaje.hora < hora_actual:
             reservas.append(reserva)
     
-    # Obtener viajes en general, pasados y actuales.
+    # Get general, past and current trips.
     viajes_general = Viaje.objects.filter(conductor=usuario)
     viajes = []
-    # For para filtrar los viajes pasados de los generales.
+    # For to filter the past trips of the generals.
     for viaje in viajes_general:
         if viaje.fecha < fecha_actual:
             viajes.append(viaje)
         elif viaje.fecha == fecha_actual and viaje.hora < hora_actual:
             viajes.append(viaje)
-    # Agregar en el contexto que irá al front las listas de 
-    # viajes y reservas pasados.
+    # Add in the context that will go to the front the lists of
+    # Past trips and reservations.
     context = {
         'reservas': reservas,
         'viajes': viajes,
@@ -378,14 +361,14 @@ def ver_historial(request):
     return render(request, 'ver_historial.html', context)
 
 def ver_historial_viajero(request):
-    # Obtener usuario y datos de fecha actuales.
+    # Get current user and date data.
     usuario = get_object_or_404(Usuario, id=request.user.id)
     fecha_actual = datetime.now().date()
     hora_actual = datetime.now().time()
-    # Obtener todas las reservas, pasadas y actuales.
+    # Get all reservations, past and current.
     reservas_general = Reserva.objects.filter(usuario=usuario)
     reservas = []
-    # For para filtrar las reservas pasadas de entre las generales.
+    # For to filter past reservations from general ones.
     for reserva in reservas_general:
         viaje = reserva.viaje
         if viaje.fecha < fecha_actual:
@@ -405,10 +388,10 @@ def ver_historial_conductor(request):
     usuario = get_object_or_404(Usuario, id=request.user.id)
     fecha_actual = datetime.now().date()
     hora_actual = datetime.now().time()
-    # Obtener viajes en general, pasados y actuales.
+    # Get general, past and current trips.
     viajes_general = Viaje.objects.filter(conductor=usuario).order_by('-fecha')
     viajes = []
-    # For para filtrar los viajes pasados de los generales.
+    # For to filter the past trips of the generals.
     for viaje in viajes_general:
         if viaje.fecha < fecha_actual:
             viajes.append(viaje)

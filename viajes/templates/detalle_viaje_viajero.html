@@ -28,9 +28,9 @@
             
             {% if estado_reserva %}
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{telefono}}</li>
-                    <li class="list-group-item">{{vehiculo.matricula}}</li>
-                    <li class="list-group-item">{{vehiculo.descripcion}}</li>
+                    <li class="list-group-item">Tel&eacute;fono: {{telefono}}</li>
+                    <li class="list-group-item">Matr&iacute;cula de veh&iacute;culo: {{vehiculo.matricula}}</li>
+                    <li class="list-group-item">Descripci&oacute;n de veh&iacute;culo: {{vehiculo.descripcion}}</li>
                     <!-- <li class="list-group-item"><strong>Matr&iacute;cula:</strong> {{vehiculo.matricula}}</li>
                     <li class="list-group-item"><strong>Autom&oacute;vil:</strong>{{vehiculo.descripcion}}</li> -->
                 </ul>
@@ -48,10 +48,10 @@
             <h5 class="card-title">{{viaje.fecha}}</h5>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{viaje.hora}}</li>
-            <li class="list-group-item">${{viaje.precio}}</li>
-            <li class="list-group-item">{{vehiculo.marca}}</li>
-            <li class="list-group-item">{{vehiculo.modelo}}</li>
+            <li class="list-group-item">Hora: {{viaje.hora}}</li>
+            <li class="list-group-item">Precio: ${{viaje.precio}}</li>
+            <li class="list-group-item">Marca del veh&iacute;culo: {{vehiculo.marca}}</li>
+            <li class="list-group-item">Modelo del veh&iacute;culo: {{vehiculo.modelo}}</li>
             
             {% if viaje.asientos == 1 %}
                 <li class="list-group-item">{{viaje.asientos}} asiento disponible</li>
@@ -63,7 +63,7 @@
         </ul>
         
         <div class="card-body">
-            <p class="card-text">{{viaje.descripcion}}</p>
+            <p class="card-text">Descripci&oacute;n: {{viaje.descripcion}}</p>
         </div>
     </div> 
 </div>

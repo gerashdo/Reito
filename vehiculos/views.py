@@ -36,9 +36,12 @@ def editar_vehiculo(request):
     vehiculo = Vehiculo.objects.filter(id_usuario=usuario).first()
     
     if request.method == "POST":
+        # We fill our vehiculo form
         form = Vehiculos_editar(request.POST, request.FILES, instance=vehiculo)
+        # We check if our form is valid.
         if form.is_valid():
             form.save()
+            # We notify the user that its vehicle has been modified.
             messages.success(request, "Tu vehiculo se ha actualizado")
             return redirect("usuarios:ver_mi_cuenta")
     form = Vehiculos_editar(instance=vehiculo)
@@ -53,11 +56,15 @@ def editar_vehiculo(request):
 # This method has the function to delete a car
 
 def eliminar_vehiculo(request, pk):
+    # We get the current sesion's user
     usuario = get_object_or_404(Usuario, id=request.user.id)
+    # We get the user's vehicle based on its id and the vehicle id he's requesting to remove.
     vehiculo = get_object_or_404(Vehiculo, id=pk, id_usuario=usuario).first()
     
     if request.method == "POST":
+        # We delete the user's vehicle.
         vehiculo.delete()
+        # We notify our user about his vehicle has been deleted.
         messages.success(request, "Tu Vehículo se ha eliminado con éxito.")
         return redirect('usuarios:ver_mi_cuenta')
         
@@ -67,7 +74,9 @@ def eliminar_vehiculo(request, pk):
 
 @login_required
 def ver_vehiculo(request):
+    # We get our current user.
     usuario = get_object_or_404(Usuario, id=request.user.id)
+    # We get the current user's vehicle.
     vehiculo = Vehiculo.objects.filter(id_usuario=usuario).first()
     context = {
         'usuario': usuario,

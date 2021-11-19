@@ -39,6 +39,7 @@ class VehiculosForm(forms.ModelForm):
             self._errors['matricula'] = self.error_class(
                 ['Solo caracteres alfanuméricos'])
         
+        # Verify if the matricula is in uppercase.
         if not matricula.isupper():
             self._errors['matricula'] = self.error_class(
                 ['Solo caracteres en mayúsculas'])
@@ -47,6 +48,7 @@ class VehiculosForm(forms.ModelForm):
             self._errors['asientos'] = self.error_class(
                 ['Los asientos deben ser un numero entero positivo'])
             
+        # Verify the seat number is not greater than 8
         if asientos > 8:
             self._errors['asientos'] = self.error_class(
                 ['Solo puedes agregar hasta 8 asientos a tu vehículo.'])
