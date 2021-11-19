@@ -59,7 +59,7 @@ def eliminar_vehiculo(request, pk):
     # We get the current sesion's user
     usuario = get_object_or_404(Usuario, id=request.user.id)
     # We get the user's vehicle based on its id and the vehicle id he's requesting to remove.
-    vehiculo = get_object_or_404(Vehiculo, id=pk, id_usuario=usuario).first()
+    vehiculo = get_object_or_404(Vehiculo, id=pk, id_usuario=usuario)
     
     if request.method == "POST":
         # We delete the user's vehicle.
