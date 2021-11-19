@@ -13,7 +13,7 @@ def nueva_reserva(request, user_pk, viaje_pk):
     if(user_pk and viaje_pk):
         viaje = Viaje.objects.get(id=viaje_pk)
         
-        # Validation of not being able to cancel a trip that has a date already made.
+        # Validation of not being able to make a reservation in a passed trip.
         # Obtaining current dates and corresponding to the trip.
         fecha = viaje.fecha
         hora = viaje.hora
