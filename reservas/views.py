@@ -55,20 +55,31 @@ def cancelar_reserva(request, user_pk, viaje_pk):
     if(user_pk and viaje_pk):
         reserva = get_object_or_404(Reserva, usuario=user_pk, viaje=viaje_pk)
         viaje = get_object_or_404(Viaje, id=viaje_pk)
-
-        if(reserva and viaje):
-            if(reserva.estado):
-                viaje.asientos += 1
-                viaje.save()
-                reserva.delete()
-                messages.success(request, "Has cancelado tu reserva")
-                return redirect('viajes:index')
+        
+        # Get the date and time of the Reito 
+        fecha = viaje.fecha
+        hora = viaje.hora
+        # Get the current date and time
+        fecha_actual = datetime.now().date()
+        hora_actual = datetime.now().time()
+        
+        if (fecha > fecha_actual) or (fecha == fecha_actual and hora > hora_actual):
+            if(reserva and viaje):
+                if(reserva.estado):
+                    viaje.asientos += 1
+                    viaje.save()
+                    reserva.delete()
+                    messages.success(request, "Has cancelado tu reserva")
+                    return redirect('viajes:index')
+                else:
+                    reserva.delete()
+                    messages.success(request, "Has cancelado tu reserva")
+                    return redirect('viajes:index')
             else:
-                reserva.delete()
-                messages.success(request, "Has cancelado tu reserva")
+                messages.error(request, "No fue posible cancelar la reserva")
                 return redirect('viajes:index')
         else:
-            messages.error(request, "No fue posible cancelar la reserva")
+            messages.error(request, "Esta reserva no puede ser cancelada porque ya pasó su fecha de realización.")
             return redirect('viajes:index')
 
 
