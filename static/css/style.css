@@ -244,12 +244,12 @@ div.estado_negativo {
 
 .destino-item {
     margin-bottom: 17.5px;
-    margin-left: 17.5px;
-    margin-right:17.5px;
     width: 100%;
 }
 
 .viajes-recientes .destino-item {
+    margin-left: 17.5px;
+    margin-right:17.5px;
     width: 30%;
 }
 
