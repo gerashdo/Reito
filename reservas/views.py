@@ -21,10 +21,11 @@ def nueva_reserva(request, user_pk, viaje_pk):
         hora_actual = datetime.now().time()
         
         # Validate that the time and date is bigger than the current date and time.
-        if fecha < fecha_actual and hora < hora_actual:
+        if fecha < fecha_actual or fecha==fecha_actual and hora<hora_actual:
             messages.error(request, "No puedes en éste viaje")
             return redirect('viajes:index')
-        
+
+
         usuario = Usuario.objects.get(id=user_pk)
         conductor = get_object_or_404(Usuario, id=viaje.conductor.id)
 
