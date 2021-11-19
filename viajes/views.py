@@ -141,8 +141,10 @@ def detalle_viaje(request, pk):
         context = {}
         
         # get the vehicle from the user driver
-        vehiculo = get_object_or_404(Vehiculo, id_usuario=usuario.id)
-        context['vehiculo'] = vehiculo
+        vehiculo = Vehiculo.objects.filter(id_usuario=usuario).first()
+        
+        if vehiculo:
+            context['vehiculo'] = vehiculo
         if(reservas):
             # Send the reservation state
             context['estado_reserva'] = reservas.estado
