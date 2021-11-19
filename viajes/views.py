@@ -60,7 +60,9 @@ def nuevo_viaje(request):
                     #The error is added to the form to the 'asientos' field
                     form.add_error('asientos',[f'El número de asientos es mayor a la capacidad de tu vehiculo.\nTu capacidad es de {asientos_publicados} asientos. '])
                     messages.error(request, "Los datos ingresados no son válidos.")
-                    return render(request,'nuevo.html',context={'form':form})
+                    return render(request,'nuevo.html',context={'form':form,
+                                                                'tiene_vehiculo': vehiculos,
+                                                                "asientos_v":asientos_publicados,})
                 
                 if form.is_valid():
                     form.save()
@@ -68,7 +70,10 @@ def nuevo_viaje(request):
                     return redirect('viajes:ver_viajes')
                 else:
                     messages.error(request, "Los datos ingresados no son válidos.")
-                    return render(request,'nuevo.html',context={'form':form})
+                    return render(request,'nuevo.html',context={'form':form,
+                                                                'tiene_vehiculo': vehiculos,
+                                                                "asientos_v":asientos_publicados
+                                                                })
             else:
                 messages.error(
                     request, "Aun no tienes un vehículo para realizar el viaje.")
@@ -84,7 +89,8 @@ def nuevo_viaje(request):
     else:
         form = ViajeForm()
         context = {
-            "tiene_vehiculo" : False
+            "tiene_vehiculo" : False,
+            "form" : form
         }
         return render(request, "nuevo.html", context)
         
@@ -135,8 +141,10 @@ def detalle_viaje(request, pk):
         context = {}
         
         # get the vehicle from the user driver
-        vehiculo = get_object_or_404(Vehiculo, id_usuario=usuario.id)
-        context['vehiculo'] = vehiculo
+        vehiculo = Vehiculo.objects.filter(id_usuario=usuario).first()
+        
+        if vehiculo:
+            context['vehiculo'] = vehiculo
         if(reservas):
             # Send the reservation state
             context['estado_reserva'] = reservas.estado
