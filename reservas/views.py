@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from usuarios.models import Usuario
 from viajes.models import Viaje
+from datetime import datetime
 from .models import Reserva
 from django.contrib.auth.decorators import login_required
 
@@ -11,8 +12,22 @@ def nueva_reserva(request, user_pk, viaje_pk):
 
     if(user_pk and viaje_pk):
         viaje = Viaje.objects.get(id=viaje_pk)
+        
+        # Validation of not being able to cancel a trip that has a date already made.
+        # Obtaining current dates and corresponding to the trip.
+        fecha = viaje.fecha
+        hora = viaje.hora
+        fecha_actual = datetime.now().date()
+        hora_actual = datetime.now().time()
+        
+        # Validate that the time and date is bigger than the current date and time.
+        if fecha < fecha_actual and hora < hora_actual:
+            messages.error(request, "No puedes en éste viaje")
+            return redirect('viajes:index')
+        
         usuario = Usuario.objects.get(id=user_pk)
         conductor = get_object_or_404(Usuario, id=viaje.conductor.id)
+
 
         if(conductor.id == request.user.id):
             messages.error(request, "No puedes reservar en tu propio viaje")
