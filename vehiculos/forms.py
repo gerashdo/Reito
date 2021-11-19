@@ -46,6 +46,10 @@ class VehiculosForm(forms.ModelForm):
         if asientos < 1:
             self._errors['asientos'] = self.error_class(
                 ['Los asientos deben ser un numero entero positivo'])
+            
+        if asientos > 8:
+            self._errors['asientos'] = self.error_class(
+                ['Solo puedes agregar hasta 8 asientos a tu vehículo.'])
 
 
 class Vehiculos_editar(forms.ModelForm):
